@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ApiService } from '../api.service';
 
 @Component({
@@ -6,17 +6,25 @@ import { ApiService } from '../api.service';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
-  
+export class HomePage implements OnDestroy {
+
   articles;
 
-  constructor(private apiService: ApiService){}
+  constructor(private apiService: ApiService) { }
 
-  ionViewDidEnter(){
+  ionViewDidEnter() {
 
-    this.apiService.getNews().subscribe((data)=>{
-      console.log(data);
+    this.apiService.getNews().subscribe((data) => {
+      // console.log(data);
       this.articles = data['articles'];
     });
+  }
+
+  ionViewDidLeave() {
+    console.log('home page leave event');
+  }
+
+  ngOnDestroy() {
+    console.log('home page destroy event');
   }
 }
